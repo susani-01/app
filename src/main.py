@@ -41,13 +41,6 @@ def create_app() -> FastAPI:
     ) -> JSONResponse:
         return failure_response(str(exc))
 
-    @app.get("/docs", include_in_schema=False)
-    async def swagger_ui() -> HTMLResponse:
-        return get_swagger_ui_html(
-            openapi_url="/openapi.json",
-            title="Construction Standard Price API",
-        )
-
     app.include_router(system_router)
     app.include_router(classification_router)
     app.include_router(item_router)
