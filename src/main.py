@@ -2,8 +2,7 @@ from __future__ import annotations
 
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
-from fastapi.openapi.docs import get_swagger_ui_html
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import JSONResponse
 
 from src.api.responses import failure_response
 from src.api.routes.classification import router as classification_router
@@ -18,7 +17,7 @@ def create_app() -> FastAPI:
             "Reference API for construction quantity items and standard market prices."
         ),
         version="1.0.0",
-        docs_url=None,
+        docs_url="/docs",
         redoc_url=None,
         openapi_url="/openapi.json",
     )
