@@ -9,7 +9,7 @@ def test_openapi_spec(client: TestClient) -> None:
     assert response.status_code == 200
     spec = response.json()
     assert spec["info"]["title"] == "Construction Standard Price API"
-    assert "/item" in spec["paths"]
+    assert "/api/v1/items" in spec["paths"]
 
 
 def test_docs_page(client: TestClient) -> None:
@@ -36,7 +36,7 @@ def test_ready_with_data(client: TestClient, require_database: None) -> None:
 
 
 def test_search_items(client: TestClient, require_database: None) -> None:
-    response = client.get("/item", params={"cnstwk_div_cd": "A", "q": "가설", "size": 5})
+    response = client.get("/api/v1/items", params={"cnstwk_div_cd": "A", "q": "가설", "size": 5})
     assert response.status_code == 200
     body = response.json()
     assert body["status"] == "success"
@@ -46,7 +46,7 @@ def test_search_items(client: TestClient, require_database: None) -> None:
 
 def test_search_with_classification_filter(client: TestClient, require_database: None) -> None:
     response = client.get(
-        "/item",
+        "/api/v1/items",
         params={"cnstwk_div_cd": "A", "lvl2_code": "AA", "size": 3},
     )
     assert response.status_code == 200
@@ -57,7 +57,7 @@ def test_search_with_classification_filter(client: TestClient, require_database:
 
 
 def test_get_item_with_price(client: TestClient, require_database: None) -> None:
-    response = client.get("/item/AAA162303500")
+    response = client.get("/api/v1/items/AAA162303500")
     assert response.status_code == 200
     body = response.json()
     assert body["status"] == "success"
@@ -66,7 +66,7 @@ def test_get_item_with_price(client: TestClient, require_database: None) -> None
 
 
 def test_get_item_without_price(client: TestClient, require_database: None) -> None:
-    response = client.get("/item/AAA161000000")
+    response = client.get("/api/v1/items/AAA161000000")
     assert response.status_code == 200
     body = response.json()
     assert body["status"] == "success"
@@ -74,7 +74,7 @@ def test_get_item_without_price(client: TestClient, require_database: None) -> N
 
 
 def test_item_not_found_returns_failure_envelope(client: TestClient, require_database: None) -> None:
-    response = client.get("/item/DOES_NOT_EXIST")
+    response = client.get("/api/v1/items/DOES_NOT_EXIST")
     assert response.status_code == 200
     body = response.json()
     assert body["status"] == "failure"
@@ -98,7 +98,7 @@ def test_list_work_divisions(client: TestClient, require_database: None) -> None
 
 
 def test_response_fields_are_snake_case(client: TestClient, require_database: None) -> None:
-    response = client.get("/item", params={"size": 1})
+    response = client.get("/api/v1/items", params={"size": 1})
     item = response.json()["data"]["items"][0]
     assert "qty_calc_ctycl_cd" in item
     assert "cnstwk_div_cd" in item

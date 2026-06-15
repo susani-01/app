@@ -20,8 +20,8 @@ Expected flow for reviewers: **`setup → run → down`** with no extra configur
 |--------|------|-------------|
 | GET | `/openapi.json` | OpenAPI specification |
 | GET | `/docs` | Swagger UI |
-| GET | `/item` | Search items (`cnstwk_div_cd`, `lvl1_code`…`lvl5_code`, `q`, `page`, `size`) |
-| GET | `/item/{qty_calc_ctycl_cd}` | Get one item |
+| GET | `/api/v1/items` | Search items (`cnstwk_div_cd`, `lvl1_code`…`lvl5_code`, `q`, `page`, `size`) |
+| GET | `/api/v1/items/{id}` | Get one item |
 | GET | `/classification` | Browse hierarchy (`cnstwk_div_cd`, optional `parent_code`) |
 | GET | `/work_division` | List work divisions |
 | GET | `/health` | Liveness |
@@ -36,8 +36,8 @@ All JSON responses use HTTP 200 with a legacy envelope:
 ## Examples
 
 ```bash
-curl "http://localhost:8080/item?cnstwk_div_cd=A&q=가설울타리&size=5"
-curl "http://localhost:8080/item/AAA162303500"
+curl "http://localhost:8080/api/v1/items?cnstwk_div_cd=A&q=가설울타리&size=5"
+curl "http://localhost:8080/api/v1/items/AAA162303500"
 curl "http://localhost:8080/classification?cnstwk_div_cd=A"
 curl "http://localhost:8080/classification?cnstwk_div_cd=A&parent_code=AA"
 ```

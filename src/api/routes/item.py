@@ -8,7 +8,7 @@ from src.api.responses import failure_response, success_response
 from src.repository.catalog_repository import ItemRepository, ItemSearchFilters
 from src.service.catalog_service import ItemService
 
-router = APIRouter(prefix="/item", tags=["item"])
+router = APIRouter(prefix="/api/v1/items", tags=["items"])
 
 
 @router.get("")
@@ -43,13 +43,13 @@ def search_items(
     return success_response(data.model_dump(mode="json"))
 
 
-@router.get("/{qty_calc_ctycl_cd}")
+@router.get("/{id}")
 def get_item(
-    qty_calc_ctycl_cd: str,
+    id: str,
     session: Session = Depends(get_db_session),
 ):
     service = ItemService(ItemRepository(session))
-    item = service.get_item(qty_calc_ctycl_cd)
+    item = service.get_item(id)
     if item is None:
-        return failure_response(f"Item not found: {qty_calc_ctycl_cd}")
+        return failure_response(f"Item not found: {id}")
     return success_response(item.model_dump(mode="json"))

@@ -22,7 +22,7 @@ check_json "/health" "success"
 check_json "/ready" "success"
 check_json "/work_division" "success"
 check_json "/classification?cnstwk_div_cd=A" "success"
-curl -fsS -G "${BASE_URL}/item" \
+curl -fsS -G "${BASE_URL}/api/v1/items" \
   --data-urlencode "cnstwk_div_cd=A" \
   --data-urlencode "q=가설" \
   --data-urlencode "size=2" | python3 -c "
@@ -30,16 +30,16 @@ import json, sys
 body = json.load(sys.stdin)
 assert body.get('status') == 'success', body
 "
-echo "OK /item search"
-check_json "/item/AAA162303500" "success"
+echo "OK /api/v1/items search"
+check_json "/api/v1/items/AAA162303500" "success"
 
-not_found="$(curl -fsS "${BASE_URL}/item/NOT_A_REAL_CODE")"
+not_found="$(curl -fsS "${BASE_URL}/api/v1/items/NOT_A_REAL_CODE")"
 python3 -c "
 import json, sys
 body = json.loads(sys.argv[1])
 assert body['status'] == 'failure'
 " "$not_found"
-echo "OK /item/{code} not-found envelope"
+echo "OK /api/v1/items/{id} not-found envelope"
 
 curl -fsS -o /dev/null "${BASE_URL}/openapi.json"
 echo "OK /openapi.json"
